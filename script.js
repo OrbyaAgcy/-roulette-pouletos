@@ -200,28 +200,57 @@ checkbox.addEventListener("change", checkFormValidity);
 // Force la vérification (et le maintien du rouge) quand on clique ailleurs
 inputEmail.addEventListener("blur", checkFormValidity);
 
+
+
+
+
+
+
+// Remplace la fonction spinWheel() par celle-ci :
+
 function spinWheel() {
-  if(spinning) return;
+  if (spinning) return;
 
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const checked = document.getElementById("check").checked;
 
-  if(!name || !email) {
+  if (!name || !email) {
     alert("Merci de remplir les champs.");
     return;
   }
 
-  if(!checked) {
+  if (!checked) {
     alert("Merci de confirmer que vous avez laissé un avis Google.");
     return;
   }
 
+  // --- VÉRIFICATION 24H PAR EMAIL ---
+  const storageKey = "pouletos_spin_" + email.toLowerCase();
+  const existingEntry = localStorage.getItem(storageKey);
+
+  if (existingEntry) {
+    const { timestamp } = JSON.parse(existingEntry);
+    const elapsed = Date.now() - timestamp;
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+
+    if (elapsed < twentyFourHours) {
+      const remaining = twentyFourHours - elapsed;
+      const hours = Math.floor(remaining / (1000 * 60 * 60));
+      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+
+      alert(`⏳ Tu as déjà joué avec cette adresse email.\nReviens dans ${hours}h ${minutes}min ou utilise une autre adresse.`);
+      return;
+    }
+  }
+  // ----------------------------------
+
   spinning = true;
+  spinButton.setAttribute("disabled", "true"); // Désactive immédiatement le bouton
 
   const winner = weightedRandom();
   const index = segments.findIndex(s => s.text === winner.text);
-  
+
   const degreesPerSegment = 360 / segments.length;
   const targetAngle = 270 - (index * degreesPerSegment) - (degreesPerSegment / 2);
   const randomExtraTurns = 6 * 360;
@@ -231,39 +260,39 @@ function spinWheel() {
 
   canvas.style.transform = `rotate(${currentRotation}deg)`;
 
-  // --- GESTION ET CALCUL DU RALENTISSEMENT DES TICS AUDIO ---
+  // --- TICKS AUDIO ---
   let currentTickAngle = 0;
-  const totalRotationDuration = 5200; // Calé sur la transition CSS
+  const totalRotationDuration = 5200;
   const startTime = performance.now();
 
   function trackTicks(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / totalRotationDuration, 1);
-    
-    // Reproduit la courbe d'amortissement de la roulette
-    const easeProgress = 1 - Math.pow(1 - progress, 3); 
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
     const animatedAngle = easeProgress * (randomExtraTurns + ((targetAngle - currentNormalizedRotation + 360) % 360));
 
-    // Si on franchit la distance d'un segment, on émet le son
     if (animatedAngle - currentTickAngle >= degreesPerSegment) {
       playNativeTick();
       currentTickAngle = animatedAngle;
     }
 
-    if (progress < 1) {
-      requestAnimationFrame(trackTicks);
-    }
+    if (progress < 1) requestAnimationFrame(trackTicks);
   }
   requestAnimationFrame(trackTicks);
-  // ----------------------------------------------------------
+  // -------------------
 
   setTimeout(() => {
-    // Déclenchement de la musique de victoire
     playNativeWin();
 
-    const code =
-      "POULETOS-" +
-      Math.random().toString(36).substring(2,8).toUpperCase();
+    // --- ENREGISTREMENT EN LOCALSTORAGE ---
+    localStorage.setItem(storageKey, JSON.stringify({
+      timestamp: Date.now(),
+      name: name,
+      prize: winner.text
+    }));
+    // --------------------------------------
+
+    const code = "POULETOS-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const resultBox = document.getElementById("result");
     resultBox.style.display = "block";
@@ -273,12 +302,13 @@ function spinWheel() {
       Tu as gagné : <strong>${winner.text}</strong><br><br>
       Code unique : <strong>${code}</strong><br><br>
       📩 Ton lot vient de t'être envoyé à l'adresse <em>${email}</em>.<br><br>
-      ⚠️ <strong>Rappel :</strong> Le lot ne peut PAS être récupéré aujourd’hui.<br>
+      ⚠️ <strong>Rappel :</strong> Le lot ne peut PAS être récupéré aujourd'hui.<br>
       Il est valable à partir de demain pendant 1 mois,<br>
-      avec condition d’achat.
+      avec condition d'achat.
     `;
 
     spinning = false;
+    // Le bouton reste désactivé — on ne le réactive PAS
 
   }, totalRotationDuration);
 }
