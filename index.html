@@ -1,620 +1,92 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>La Roulette de chez Pouletos</title>
 
-<title>La Roulette Pouletos</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+  
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap');
-
-:root{
-  --bg-main:#f8ba72;
-  --bg-card:#F4EBE1;
-  --primary:#F86624;
-  --primary-hover:#E05313;
-  --dark:#111111;
-  --white:#FFFFFF;
-  --gray:#666666;
-  --shadow:6px 6px 0px var(--dark);
-  --border-radius:24px;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:linear-gradient(180deg,#f8ba72 0%,#ffcf91 100%);
-  font-family:'Poppins',sans-serif;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:30px 15px;
-  overflow-x:hidden;
-  color:var(--dark);
-}
-
-/* ===== SLOGAN JAPONAIS ===== */
-
-.top-japanese{
-  font-size:2.3rem;
-  font-weight:900;
-  margin-bottom:25px;
-  text-align:center;
-  letter-spacing:8px;
-
-  background:linear-gradient(
-    90deg,
-    #ff0000,
-    #ff7b00,
-    #ffd000,
-    #ff7b00,
-    #ff0000
-  );
-
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-
-  text-shadow:
-    0 0 10px rgba(255,120,0,.4),
-    0 0 20px rgba(255,90,0,.4),
-    0 0 30px rgba(255,0,0,.3);
-
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow{
-  from{ transform:scale(1); }
-  to{ transform:scale(1.04); }
-}
-
-.top-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  width:100%;
-  max-width:500px;
-  margin-bottom:30px;
-}
-
-.back-btn{
-  background:#fff;
-  border:2px solid #111;
-  padding:10px 16px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:700;
-  box-shadow:3px 3px 0 #111;
-  transition:.2s;
-}
-
-.back-btn:hover{
-  transform:translate(-2px,-2px);
-}
-
-.badge{
-  background:#111;
-  color:#fff;
-  padding:8px 14px;
-  border-radius:999px;
-  font-weight:800;
-}
-
-h1{
-  font-size:2.4rem;
-  font-weight:900;
-  margin-bottom:15px;
-  text-align:center;
-}
-
-p{
-  text-align:center;
-  max-width:500px;
-  margin-bottom:30px;
-  font-weight:600;
-  line-height:1.6;
-}
-
-.container{
-  background:var(--bg-card);
-  border:3px solid #111;
-  border-radius:24px;
-  padding:30px;
-  width:100%;
-  max-width:500px;
-  box-shadow:var(--shadow);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-input{
-  width:100%;
-  padding:14px;
-  margin-bottom:14px;
-  border:2px solid #111;
-  border-radius:12px;
-  font-size:1rem;
-  font-family:'Poppins';
-}
-
-input:focus{
-  outline:none;
-  border-color:var(--primary);
-}
-
-.valid-name,
-.valid-email{
-  border:3px solid #43BCCD !important;
-  background:#f0fbfd;
-}
-
-.invalid-email{
-  border:3px solid #EA3546 !important;
-  background:#fff5f5;
-}
-
-.google-btn{
-  width:100%;
-  text-align:center;
-  background:#fff;
-  border:2px solid #111;
-  border-radius:12px;
-  padding:16px;
-  text-decoration:none;
-  color:#111;
-  font-weight:800;
-  margin-bottom:15px;
-  box-shadow:3px 3px 0 #111;
-  transition:.2s;
-}
-
-.google-btn:hover{
-  transform:translate(-2px,-2px);
-}
-
-.checkbox{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  width:100%;
-  margin-bottom:25px;
-}
-
-.checkbox input{
-  width:auto;
-}
-
-/* ===== CONDITIONS (REFONTE) ===== */
-
-.conditions{
-  margin-top:25px;
-  width:100%;
-  background:linear-gradient(135deg,#ffffff,#fff3e6);
-  border:2px solid #111;
-  border-radius:18px;
-  padding:18px 20px;
-  box-shadow:4px 4px 0 #111;
-}
-
-.conditions-title{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:900;
-  font-size:1rem;
-  margin-bottom:12px;
-  color:#111;
-}
-
-.conditions ul{
-  list-style:none;
-  padding:0;
-  margin:0;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.conditions li{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  font-size:.88rem;
-  color:#333;
-  line-height:1.4;
-}
-
-.conditions li::before{
-  content:"✔";
-  color:#F86624;
-  font-weight:900;
-}
-
-/* ===== WHEEL ===== */
-
-.wheel-wrapper{
-  position:relative;
-  width:400px;
-  height:400px;
-  max-width:100%;
-  margin:10px 0 20px;
-}
-
-#wheel{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  border:6px solid #111;
-  transition:transform 5.2s cubic-bezier(0.15,0.88,0.3,1);
-  box-shadow:4px 4px 0 #111;
-}
-
-.pointer{
-  position:absolute;
-  top:-15px;
-  left:50%;
-  transform:translateX(-50%);
-  width:32px;
-  height:40px;
-  background:#111;
-  clip-path:polygon(0 0,100% 0,100% 50%,50% 100%,0 50%);
-  z-index:10;
-}
-
-.center-logo{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  overflow:hidden;
-  border:4px solid #ffd000;
-  background:#111;
-}
-
-.center-logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.spin-btn{
-  width:100%;
-  background:var(--primary);
-  color:#fff;
-  border:2px solid #111;
-  border-radius:16px;
-  padding:18px;
-  font-size:1.1rem;
-  font-weight:900;
-  cursor:pointer;
-  box-shadow:4px 4px 0 #111;
-  transition:.2s;
-}
-
-.spin-btn:hover{
-  transform:translate(-2px,-2px);
-  background:var(--primary-hover);
-}
-
-.spin-btn:disabled{
-  background:#ccc;
-  color:#666;
-  cursor:not-allowed;
-  box-shadow:none;
-}
-
-.result{
-  display:none;
-  margin-top:25px;
-  background:#fff;
-  border:3px solid #111;
-  border-radius:16px;
-  padding:24px;
-  width:100%;
-  text-align:center;
-  font-weight:600;
-}
-
-/* ===== FOOTER ===== */
-
-.footer{
-  margin-top:40px;
-  text-align:center;
-  color:#111;
-  font-weight:700;
-  font-size:.95rem;
-}
-
-.footer span{
-  color:#F86624;
-  font-weight:900;
-}
-
-.footer-jp{
-  margin-top:8px;
-  font-size:1rem;
-  letter-spacing:4px;
-  color:#ff5e00;
-  font-weight:900;
-}
-
-@media(max-width:450px){
-  .top-japanese{
-    font-size:1.4rem;
-    letter-spacing:4px;
-  }
-
-  h1{
-    font-size:1.8rem;
-  }
-
-  .container{
-    padding:20px 15px;
-  }
-}
-</style>
 </head>
 
 <body>
-
-<div class="top-japanese">
-  うまうまポウレットス
+  <div class="top-bar">
+    <button class="back-btn" onclick="window.location.href='https://www.pouletos.com';">⬅️ Retour</button>
+    <div class="badge-brand">
+  <span class="jp-text">ポウレトス</span>
+  <span class="sub-text">100% GAGNANT</span>
 </div>
-
-<div class="top-bar">
-
-  <button class="back-btn"
-    onclick="window.location.href='https://www.pouletos.com'">
-    ⬅️ Retour
-  </button>
-
-  <div class="badge">
-    🍗 100% gagnant
   </div>
+  
 
-</div>
+  <h1>Tournez la roue, gagnez gros !</h1>
 
-<h1>La Roulette Pouletos !</h1>
+  <p>
+    Tente ta chance avec notre roulette 100% gagnante.
+    <br>
+    Laisse un avis Google, confirme ta participation, puis lance la roue.
+  </p>
 
-<p>
-  Tente ta chance avec notre roulette 100% gagnante 🍗<br>
-  Laisse un avis Google puis lance la roue !
-</p>
+  <div class="container">
 
-<div class="container">
+    <input type="text" id="name" placeholder="Ton prénom">
+    <input type="email" id="email" placeholder="Ton email">
 
-  <input type="text" id="name" placeholder="Ton prénom">
-  <input type="email" id="email" placeholder="Ton email">
+    <a
+      class="google-btn"
+      href="https://www.google.com/search?sca_esv=97234541236c36f9&rlz=1C5CHFA_enFR932FR932&sxsrf=ANbL-n42_OxsiJBZLuGmN1tNDbjCSogX2A:1778080130140&q=pouletos+bel+est&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qORLPqLTFYAUKSVkp1DoxwXSMezolWfhb4xxEKotpbBT-6VSJph4tFTZmbREoM1V5vm3H7dA%3D&uds=ALYpb_k6otuSYDT1zFYqBpNGDSzKsjpDir9igN7fooFY0t5XMkanWLLmDCXw2OeZDJV25U8Za4roBXXz79BCYVeJtE4clUE11hjEK7MG608s6jMsGkzVwds&sa=X&ved=2ahUKEwjWy6fU-KSUAxXUV6QEHd0SDccQ3PALegQIGRAE&biw=1440&bih=782&dpr=2"
+      target="_blank"
+    >
+      ⭐ Laisser mon avis Google !
+    </a>
 
-  <a class="google-btn" href="https://www.google.com" target="_blank">
-    ⭐ Laisser mon avis Google !
-  </a>
+    <div class="checkbox">
+      <input type="checkbox" id="check" disabled>
+      <label for="check">J’ai laissé un avis Google</label>
+    </div>
 
-  <div class="checkbox">
-    <input type="checkbox" id="check" disabled>
-    <label for="check">J’ai laissé un avis Google</label>
-  </div>
+    <div class="wheel-wrapper">
+      <div class="wheel-glow"></div>
+      <div class="pointer"></div>
+      <canvas id="wheel" width="400" height="400"></canvas>
+      <div class="center-logo">
+        <img src="https://media.licdn.com/dms/image/v2/D4E1BAQGBYYnQEQfIrA/company-background_10000/B4EZc_h84LHIAY-/0/1749117554727/pouletos_cover?e=2147483647&v=beta&t=m7Czp69kwXPujFTGhqmW_YHmGjpmt6QANOZmyLAJN0g" alt="Logo Pouletos">
+      </div>
+    </div>
 
-  <div class="wheel-wrapper">
+    <button class="spin-btn" id="spin-btn" onclick="spinWheel()" disabled>
+      Lancer la roulette
+    </button>
 
-    <div class="pointer"></div>
-    <canvas id="wheel" width="400" height="400"></canvas>
+    <div class="result" id="result"></div>
 
-    <div class="center-logo">
-      <img src="https://media.licdn.com/dms/image/v2/D4E1BAQGBYYnQEQfIrA/company-background_10000/B4EZc_h84LHIAY-/0/1749117554727/pouletos_cover?e=2147483647&v=beta&t=m7Czp69kwXPujFTGhqmW_YHmGjpmt6QANOZmyLAJN0g">
+    <div class="conditions">
+      <strong>Conditions :</strong>
+      <ul>
+        <li>Le lot ne peut PAS être récupéré le jour même.</li>
+        <li>Le lot est récupérable à partir du lendemain.</li>
+        <li>Le lot est envoyé par email.</li>
+        <li>Valable 1 mois.</li>
+        <li>Condition d’achat obligatoire.</li>
+        <li>Un seul gain par personne.</li>
+      </ul>
     </div>
 
   </div>
 
-  <button class="spin-btn" id="spin-btn" onclick="spinWheel()" disabled>
-    Lancer la roulette
-  </button>
+  
 
-  <div class="result" id="result"></div>
-
-  <!-- CONDITIONS MODERNISÉES -->
-  <div class="conditions">
-
-    <div class="conditions-title">
-      📜 Conditions de participation
-    </div>
-
-    <ul>
-      <li>Le lot ne peut pas être récupéré le jour même.</li>
-      <li>Offre valable pendant 1 mois après gain.</li>
-      <li>Un avis Google est obligatoire pour participer.</li>
-      <li>Limité à une participation par personne.</li>
-    </ul>
-
-  </div>
-
-</div>
-
-<div class="footer">
+</body>
+<footer>
+  <div class="footer">
   🍗 Powered by <span>Pouletos</span>
 
   <div class="footer-jp">
     東京スタイル ・ チキンキング
   </div>
 </div>
+</footer>
 
-<!-- JS inchangé -->
-<script>
-const canvas = document.getElementById("wheel");
-const ctx = canvas.getContext("2d");
-
-const segments = [
-  { text:"Cannette", color:"#F9C80E", weight:32 },
-  { text:"1 Pilon", color:"#F86624", weight:22 },
-  { text:"1 Donuts", color:"#355cea", weight:16 },
-  { text:"1 Saucisse", color:"#F9C80E", weight:12 },
-  { text:"2 Ailes", color:"#F86624", weight:9 },
-  { text:"Dessert", color:"#43BCCD", weight:5 },
-  { text:"Barquette", color:"#EA3546", weight:4 }
-];
-
-const total = segments.reduce((sum,s)=>sum+s.weight,0);
-const arc = (2 * Math.PI) / segments.length;
-const center = canvas.width / 2;
-const radius = center;
-
-function drawWheel(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  for(let i=0;i<segments.length;i++){
-    const angle = i * arc;
-
-    ctx.beginPath();
-    ctx.moveTo(center,center);
-    ctx.arc(center,center,radius,angle,angle + arc);
-    ctx.closePath();
-
-    ctx.fillStyle = segments[i].color;
-    ctx.fill();
-
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    ctx.save();
-    ctx.translate(center,center);
-    ctx.rotate(angle + arc/2);
-
-    ctx.fillStyle = "rgba(0,0,0,.25)";
-    ctx.fillRect(64,-22,110,44);
-
-    ctx.fillStyle = "#fff";
-    ctx.font = "900 16px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-
-    ctx.fillText(segments[i].text,119,0);
-    ctx.restore();
-  }
-}
-
-drawWheel();
-
-function weightedRandom(){
-  let rand = Math.random() * total;
-
-  for(let item of segments){
-    if(rand < item.weight){
-      return item;
-    }
-    rand -= item.weight;
-  }
-}
-
-let spinning = false;
-let currentRotation = 0;
-
-const inputName = document.getElementById("name");
-const inputEmail = document.getElementById("email");
-const checkbox = document.getElementById("check");
-const spinButton = document.getElementById("spin-btn");
-const googleButton = document.querySelector(".google-btn");
-
-googleButton.addEventListener("click",()=>{
-  checkbox.removeAttribute("disabled");
-});
-
-function checkFormValidity(){
-  const nameValue = inputName.value.trim();
-  const emailValue = inputEmail.value.trim();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const validEmail = emailRegex.test(emailValue);
-
-  if(nameValue !== ""){
-    inputName.classList.add("valid-name");
-  }else{
-    inputName.classList.remove("valid-name");
-  }
-
-  if(emailValue === ""){
-    inputEmail.classList.remove("valid-email","invalid-email");
-  }
-  else if(validEmail){
-    inputEmail.classList.add("valid-email");
-    inputEmail.classList.remove("invalid-email");
-  }else{
-    inputEmail.classList.add("invalid-email");
-    inputEmail.classList.remove("valid-email");
-  }
-
-  if(nameValue && validEmail && checkbox.checked){
-    spinButton.removeAttribute("disabled");
-  }else{
-    spinButton.setAttribute("disabled",true);
-  }
-}
-
-inputName.addEventListener("input",checkFormValidity);
-inputEmail.addEventListener("input",checkFormValidity);
-checkbox.addEventListener("change",checkFormValidity);
-
-function spinWheel(){
-  if(spinning) return;
-
-  const name = inputName.value.trim();
-  const email = inputEmail.value.trim();
-
-  if(!name || !email){
-    alert("Merci de remplir les champs.");
-    return;
-  }
-
-  if(!checkbox.checked){
-    alert("Merci de confirmer votre avis Google.");
-    return;
-  }
-
-  spinning = true;
-  spinButton.setAttribute("disabled",true);
-
-  const winner = weightedRandom();
-  const index = segments.findIndex(s => s.text === winner.text);
-  const degreesPerSegment = 360 / segments.length;
-
-  const targetAngle =
-    270 -
-    (index * degreesPerSegment) -
-    (degreesPerSegment / 2);
-
-  currentRotation += 2160 + targetAngle;
-
-  canvas.style.transform = `rotate(${currentRotation}deg)`;
-
-  setTimeout(()=>{
-    const code =
-      "POULETOS-" +
-      Math.random().toString(36).substring(2,8).toUpperCase();
-
-    const resultBox = document.getElementById("result");
-
-    resultBox.style.display = "block";
-
-    resultBox.innerHTML = `
-      🎉 Bravo ${name} !<br><br>
-      Tu as gagné : <strong>${winner.text}</strong><br><br>
-      Code : <strong>${code}</strong><br><br>
-      📩 Envoyé à : <em>${email}</em>
-    `;
-
-    spinning = false;
-  },5200);
-}
-</script>
-
-</body>
 </html>
